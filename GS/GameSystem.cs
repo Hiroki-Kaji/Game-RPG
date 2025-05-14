@@ -30,22 +30,9 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        PrassExp(150);
+        
     }
-    /// <summary>
-    /// バトルシーンに切り替える
-    /// </summary>
-    public void ChangeBattleScene()
-    {
-        SceneManager.LoadScene("BattleScene");
-    }
-    /// <summary>
-    /// ストーリーシーンに切り替える
-    /// </summary>
-    public void ChangeStoryScene()
-    {
-        SceneManager.LoadScene("StoryScene");
-    }
+
     /// <summary>
     /// 経験値を増やす処理、レベルが上がったら経験値分リセット
     /// </summary>
@@ -67,6 +54,30 @@ public class GameSystem : MonoBehaviour
     public void SetPlayerName(string name)
     {
         GameManager.instance.SetPlayerName(name);
+    }
+    /// <summary>
+    /// バトルシーンに切り替える
+    /// </summary>
+    public void ChangeBattleScene()
+    {
+        SceneManager.LoadScene("BattleScene");
+    }
+    /// <summary>
+    /// ストーリーシーンに切り替える
+    /// </summary>
+    public void ChangeStoryScene()
+    {
+        SceneManager.LoadScene("StoryScene");
+    }
+
+    public void ChangeFirstScene()
+    {
+        SceneManager.LoadScene("FirstScene");
+    }
+
+    public void ChangeEndScene()
+    {
+        SceneManager.LoadScene("EndScene");
     }
     #endregion
 }

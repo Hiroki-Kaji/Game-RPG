@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharaStatus : MonoBehaviour
+[System.Serializable]
+public class CharaStatus
 {
     #region 変数/参照
     [SerializeField] private Chara _chara; //キャラクターの基礎データ
@@ -18,9 +19,7 @@ public class CharaStatus : MonoBehaviour
     #endregion
     #region メソッド
     //敵モンスターのデータに使う関数
-    public CharaStatus()
-    {
-    }
+
     public CharaStatus(Chara chara,int inputlv)
     {
         _chara = chara;
@@ -38,6 +37,35 @@ public class CharaStatus : MonoBehaviour
     {
         atk = _chara.BasicAtk * lv;
         return atk;
+    }
+    public int MaxHP()
+    {
+        return _chara.BasicHP * lv;
+
+    }
+    public int MaxAtk()
+    {
+        return _chara.BasicAtk * lv;
+    }
+
+    public void damageHP(int damage)
+    {
+        this.hp -= damage;
+        if (this.hp < 0)
+        {
+            this.hp = 0;
+        }
+    }
+
+    public void HealHP(int heal)
+    {
+        Debug.Log(this.hp+"::"+heal);
+        this.hp += heal;
+        Debug.Log(this.hp+"HP:"+ HP);
+        if (this.hp > MaxHP())
+        {
+            this.hp = MaxHP();
+        }
     }
     #endregion
 }

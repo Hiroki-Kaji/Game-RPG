@@ -68,9 +68,9 @@ public class ResourceDataBase : MonoBehaviour
             GameBattleInfo = new List<BattleData>(wrapper.lines);
 
             // デバッグ表示
-            foreach (var line in GameBattleInfo) {
+            /*foreach (var line in GameBattleInfo) {
                 Debug.Log($"ID: {line.id}, Enemy2: {line.enemy2}, enemy2lv: {line.enemy2_lv}");
-            }
+            }*/
         }
         else
         {
@@ -78,29 +78,32 @@ public class ResourceDataBase : MonoBehaviour
         }
     }
     //エネミーの情報を出力する
-    public List<CharaStatus> OutputEnemysInfo(int BattleID)
+    public CharaStatus[] OutputEnemysInfo(int BattleID)
     {
         Debug.Log("ResourceDataBase.OutputEnemyInfo");
-        List<CharaStatus> charas = new List<CharaStatus>();
+        CharaStatus[] charas = new CharaStatus[3];
         //キャラの検索
-        if (GameBattleInfo[BattleID].enemy1 != null)
+        if (GameBattleInfo[BattleID].enemy1 != "")
         {   
             Chara chara1 = CharaDataBase.instance.SearchChara(GameBattleInfo[BattleID].enemy1);
-            charas.Add(new CharaStatus(chara1, GameBattleInfo[BattleID].enemy1_lv)); Debug.Log(charas[0]);
+            charas[0] = new CharaStatus(chara1, GameBattleInfo[BattleID].enemy1_lv);
+            Debug.Log("キャラ1追加");
         }
         else
         {
             Debug.LogError("データ読み取りに失敗しました。実行順を確認してください。");
         }
-        if (GameBattleInfo[BattleID].enemy2 != null)
+        if (GameBattleInfo[BattleID].enemy2 != "")
         { 
             Chara chara2 = CharaDataBase.instance.SearchChara(GameBattleInfo[BattleID].enemy2);
-            charas.Add(new CharaStatus(chara2, GameBattleInfo[BattleID].enemy2_lv));
+            charas[1] = new CharaStatus(chara2, GameBattleInfo[BattleID].enemy2_lv);
+            Debug.Log("キャラ2追加");
         }
-        if (GameBattleInfo[BattleID].enemy3 != null)
+        if (GameBattleInfo[BattleID].enemy3 != "")
         {   
             Chara chara3 = CharaDataBase.instance.SearchChara(GameBattleInfo[BattleID].enemy3);
-            charas.Add(new CharaStatus(chara3, GameBattleInfo[BattleID].enemy3_lv));
+            charas[2] = new CharaStatus(chara3, GameBattleInfo[BattleID].enemy3_lv);
+            Debug.Log("キャラ3追加");
         }
         
         return charas;

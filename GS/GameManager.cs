@@ -39,10 +39,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        scenceID = 1;
-        battleID = 1;
-        playerLv = 1;
-        playerExp =0;
+
     }
 
     /// <summary>

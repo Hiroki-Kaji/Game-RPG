@@ -9,8 +9,9 @@ public class BattleCanvas : MonoBehaviour
     #region 変数/参照
     [SerializeField] Image Hero;
     [SerializeField] Image[] Enemies = { };
-    [SerializeField] Text HeroHP;
-    [SerializeField] Text[] EnemiesHP;
+    [SerializeField] TextMeshProUGUI HeroHP;
+    [SerializeField] TextMeshProUGUI [] EnemiesHP;
+    [SerializeField] TextMeshProUGUI[] EnemiesLv;
     [SerializeField] GameObject Dialog;
     [SerializeField] TextMeshProUGUI DialogText;
     [SerializeField] GameObject Buttons;
@@ -21,5 +22,121 @@ public class BattleCanvas : MonoBehaviour
     [SerializeField] Image Loading;
     #endregion
     #region 関数名
+    /// <summary>
+    /// ダイアログをSetActive(true)する関数
+    /// </summary>
+    public void OpenDialog()
+    {
+        
+    }
+    /// <summary>
+    /// ダイアログをSetActive(false)する関数
+    /// </summary>
+    public void CloseDialog()
+    {
+
+    }
+    /// <summary>
+    /// ダイアログのTextを書き換える関数
+    /// </summary>
+    public void UpdateDialog()
+    {
+        
+    }
+    /// <summary>
+    /// HeroをSetActive(true)する関数
+    /// </summary>
+    public void OpenHero()
+    {
+
+    }
+    /// <summary>
+    /// HeroをSetActive(false)する関数
+    /// </summary>
+    public void CloseHero()
+    {
+
+    }
+    /// <summary>
+    /// Heroの情報を書き換える関数
+    /// </summary>
+    public void UpdateHeroData(CharaStatus player)
+    {
+        //スプライトの更新
+        //HPtextの初期設定
+    }
+    /// <summary>
+    /// HeroHPのTextを書き換える関数
+    /// </summary>
+    public void UpdateHeroHP()
+    {
+
+    }
+    /// <summary>
+    /// Other[引数]をSetActive(true)する関数 引数2以降はnullの時実行しない
+    /// </summary>
+    public void OpenOthers(int other1, int other2, int other3)
+    {
+        Enemies[other1].gameObject.SetActive(true);
+        //残りの記述
+    }
+    /// <summary>
+    /// Other[引数]をSetActive(false)する関数 引数2以降はnullの時実行しない
+    /// </summary>
+    public void CloseOthers(int other1, int other2, int other3)
+    {
+
+    }
+    /// <summary>
+    /// OtherDataの情報を書き換える関数
+    /// </summary>
+    public void UpdateOtherData(CharaStatus other, int enemyNum)
+    {
+        //Spriteの表示
+        //Lvの表示
+    }
+    /// <summary>
+    /// OtherHPのTextを書き換える関数
+    /// </summary>
+    public void UpdateOtherHP(string hp, int enemyNum)
+    {
+        
+    }
+    /// <summary>
+    /// ButtonsをSetActive(true)する関数
+    /// </summary>
+    public void OpenButtons()
+    {
+
+    }
+    /// <summary>
+    /// ButtonsをSetActive(false)する関数
+    /// </summary>
+    public void CloseButtons()
+    {
+
+    }
+    /// <summary>
+    /// 背景を変更する関数
+    /// </summary>
+    public void ChangeBackGround()
+    {
+        //現状は同じものを貼る
+    }
+    /// <summary>
+    /// LoadingをSetActive(true)する関数		
+    /// </summary>
+    public void OpenLoading()
+    {
+
+    }
+    /// <summary>
+    /// LoadingをSetActive(false)する関数		
+    /// </summary>
+    public void CloseLoading()
+    {
+
+    }
+
     #endregion
 }
