@@ -16,13 +16,14 @@ public class GameSystem : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
     /// <summary>
@@ -55,17 +56,42 @@ public class GameSystem : MonoBehaviour
     {
         GameManager.instance.SetPlayerName(name);
     }
+
+    public void ChangeScene()
+    {
+        GameManager.instance.ForwardScene();
+        try
+        {
+            Debug.Log(GameManager.instance.SceneID);
+            switch (ResourceDataBase.instance.GameProgression[GameManager.instance.SceneID].Type)
+            {
+                case ProgressionData.TYPE.Story:
+                    ChangeStoryScene();
+                    break;
+                case ProgressionData.TYPE.Battle:
+                    ChangeBattleScene();
+                    break;
+                default:
+                    Debug.LogError("存在しないシーンタイプです");
+                    break;
+            }
+        }
+        catch
+        {
+            ChangeEndScene();
+        }
+    }
     /// <summary>
     /// バトルシーンに切り替える
     /// </summary>
-    public void ChangeBattleScene()
+    private void ChangeBattleScene()
     {
         SceneManager.LoadScene("BattleScene");
     }
     /// <summary>
     /// ストーリーシーンに切り替える
     /// </summary>
-    public void ChangeStoryScene()
+    private void ChangeStoryScene()
     {
         SceneManager.LoadScene("StoryScene");
     }
@@ -75,7 +101,7 @@ public class GameSystem : MonoBehaviour
         SceneManager.LoadScene("FirstScene");
     }
 
-    public void ChangeEndScene()
+    private void ChangeEndScene()
     {
         SceneManager.LoadScene("EndScene");
     }

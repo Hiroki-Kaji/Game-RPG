@@ -10,7 +10,7 @@ public class TextData
     public int chara1ID;
     public int chara2ID;
     public int speakerID;
-    public int background;
+    public string background;
     public string text;
 }
 

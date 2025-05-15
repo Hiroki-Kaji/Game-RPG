@@ -9,14 +9,12 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
     //変数
     [SerializeField]private string playerName; //プレイヤー名
-    [SerializeField]private int scenceID; //シーン進捗
-    [SerializeField]private int battleID; //バトル進捗
+    [SerializeField]private int sceneID; //シーン進捗
     [SerializeField]private int playerLv; //プレイヤーレベル
     [SerializeField]private float playerExp; //プレイヤー経験値
 
     public string PlayerName { get => playerName;}
-    public int ScenceID { get => scenceID;}
-    public int BattleID { get => battleID;}
+    public int SceneID { get => sceneID;}
     public int PlayerLv { get => playerLv;}
     public float PlayerExp { get => playerExp;}
     #endregion
@@ -25,13 +23,14 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
     /// <summary>
@@ -62,9 +61,14 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 名前を設定する処理
     /// </summary>
-    public void SetPlayerName(string name)
+    internal void SetPlayerName(string name)
     {
-        playerName = name;
+        GameManager.instance.playerName = name;
+    }
+
+    internal void ForwardScene()
+    {
+        GameManager.instance.sceneID++;
     }
     #endregion
 }

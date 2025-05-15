@@ -25,7 +25,7 @@ public class CharaDataBase : MonoBehaviour
     /// </summary>
     /// <param name="charaName"></param>
     /// <returns></returns>
-    public Chara SearchChara(string charaName)
+    public Chara SearchEnemyChara(string charaName)
     {
         Debug.Log("CharaDataBase.SearchChara");
         //“G‚ÌƒLƒƒƒ‰‚Ì•ªŒJ‚è•Ô‚·

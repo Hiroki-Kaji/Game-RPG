@@ -12,6 +12,8 @@ public class ResourceDataBase : MonoBehaviour
     [SerializeField] public List<TextData>GameStoryInfo =new List<TextData>();
     [SerializeField] public List<BattleData>GameBattleInfo =new List<BattleData>();
     [SerializeField] public List<string> BattleText = new List<string>();
+    [SerializeField] public List<ProgressionData> GameProgression = new List<ProgressionData>();
+    [SerializeField] public List<Sprite>BGsprite = new List<Sprite>();
     #endregion
     #region 関数名
     private void Awake()
@@ -26,14 +28,10 @@ public class ResourceDataBase : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        SetupStoryText("sample");
-        //SetupBattleText("sample");
-    }
     //ストーリーのテキストを呼び出す
     public void SetupStoryText(string filename)
     {
+        Debug.Log("ResourceDataBase.SetupStoryText");
         TextAsset jsonFile = Resources.Load<TextAsset>("Texts/"+filename);
 
         if (jsonFile != null) {
@@ -55,6 +53,7 @@ public class ResourceDataBase : MonoBehaviour
 
     public void SetupBattleText(string filename)
     {
+        Debug.Log("ResourceDataBase.SetupBattleText");
         TextAsset jsonFile = Resources.Load<TextAsset>("Battles/" + filename);
 
         if (jsonFile != null)
@@ -85,9 +84,8 @@ public class ResourceDataBase : MonoBehaviour
         //キャラの検索
         if (GameBattleInfo[BattleID].enemy1 != "")
         {   
-            Chara chara1 = CharaDataBase.instance.SearchChara(GameBattleInfo[BattleID].enemy1);
+            Chara chara1 = CharaDataBase.instance.SearchEnemyChara(GameBattleInfo[BattleID].enemy1);
             charas[0] = new CharaStatus(chara1, GameBattleInfo[BattleID].enemy1_lv);
-            Debug.Log("キャラ1追加");
         }
         else
         {
@@ -95,18 +93,53 @@ public class ResourceDataBase : MonoBehaviour
         }
         if (GameBattleInfo[BattleID].enemy2 != "")
         { 
-            Chara chara2 = CharaDataBase.instance.SearchChara(GameBattleInfo[BattleID].enemy2);
+            Chara chara2 = CharaDataBase.instance.SearchEnemyChara(GameBattleInfo[BattleID].enemy2);
             charas[1] = new CharaStatus(chara2, GameBattleInfo[BattleID].enemy2_lv);
-            Debug.Log("キャラ2追加");
+            //Debug.Log("キャラ2追加");
         }
         if (GameBattleInfo[BattleID].enemy3 != "")
         {   
-            Chara chara3 = CharaDataBase.instance.SearchChara(GameBattleInfo[BattleID].enemy3);
+            Chara chara3 = CharaDataBase.instance.SearchEnemyChara(GameBattleInfo[BattleID].enemy3);
             charas[2] = new CharaStatus(chara3, GameBattleInfo[BattleID].enemy3_lv);
-            Debug.Log("キャラ3追加");
+            //Debug.Log("キャラ3追加");
         }
         
         return charas;
+    }
+
+    /// <summary>
+    /// フォルダから指定した名前のスプライトを検索します。
+    /// </summary>
+    /// <param name="name">検索するスプライトの名前（拡張子なし）</param>
+    /// <returns>該当するスプライトが見つかれば返し、見つからなければ null を返します。</returns>
+    public Sprite SearchStoryBack(string name)
+    {
+        Debug.Log("ResourceDataBase.SearchStoryBack");
+        // Resources フォルダ内の指定パスからスプライトを検索
+        Sprite sprite = Resources.Load<Sprite>($"Arts/StoryBack/{name}");
+
+        // スプライトが見つからなければ null を返す
+        if (sprite == null)
+        {
+            Debug.LogWarning($"スプライト '{name}' が Resources/Arts/StoryBack フォルダ内に見つかりませんでした。");
+        }
+
+        return sprite;
+    }
+
+    public Sprite SearchBattleBack(string name)
+    {
+        Debug.Log("ResourceDataBase.SearchBattleBack");
+        // Resources フォルダ内の指定パスからスプライトを検索
+        Sprite sprite = Resources.Load<Sprite>($"Arts/BattleBack/{name}");
+
+        // スプライトが見つからなければ null を返す
+        if (sprite == null)
+        {
+            Debug.LogWarning($"スプライト '{name}' が Resources/Arts/BattleBack フォルダ内に見つかりませんでした。");
+        }
+
+        return sprite;
     }
     #endregion
 }

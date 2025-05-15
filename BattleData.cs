@@ -13,7 +13,7 @@ public class BattleData
     public int enemy1_lv;
     public int enemy2_lv;
     public int enemy3_lv;
-    public int background;
+    public string background;
 }
 
 [Serializable]

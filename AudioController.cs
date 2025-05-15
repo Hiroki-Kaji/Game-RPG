@@ -10,21 +10,21 @@ public class AudioController : MonoBehaviour
     [SerializeField] List<AudioClip> soundList = new List<AudioClip>();
 
     /// <summary>
-    /// ƒCƒ“ƒXƒ^ƒ“ƒX‰»
+    /// ï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½
     /// </summary>
     private void Awake()
     {
         
     }
     /// <summary>
-    /// w’è‚³‚ê‚½BGM‚ğ—¬‚·ŠÖ”
+    /// ï¿½wï¿½è‚³ï¿½ê‚½BGMï¿½ğ—¬‚ï¿½ï¿½Öï¿½
     /// </summary>
     public void OutputBGM()
     {
 
     }
     /// <summary>
-    /// w’è‚³‚ê‚½Œø‰Ê‰¹‚ğ—¬‚·ŠÖ”
+    /// ï¿½wï¿½è‚³ï¿½ê‚½ï¿½ï¿½ï¿½Ê‰ï¿½ï¿½ğ—¬‚ï¿½ï¿½Öï¿½
     /// </summary>
     public void OutputSound()
     {

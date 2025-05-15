@@ -13,7 +13,7 @@ public class BattleCanvas : MonoBehaviour
     [SerializeField] TextMeshProUGUI [] EnemiesHP;
     [SerializeField] TextMeshProUGUI[] EnemiesLv;
     [SerializeField] GameObject Dialog;
-    [SerializeField] TextMeshProUGUI DialogText;
+    [SerializeField] List<TextMeshProUGUI> DialogText = new List<TextMeshProUGUI>();
     [SerializeField] GameObject Buttons;
     [SerializeField] Button AtkButton;
     [SerializeField] Button MagicButton;
@@ -22,6 +22,11 @@ public class BattleCanvas : MonoBehaviour
     [SerializeField] Image Loading;
     #endregion
     #region 関数名
+    private void Start()
+    {
+        GUIStyle style = new GUIStyle();
+        style.richText = true;
+    }
     /// <summary>
     /// ダイアログをSetActive(true)する関数
     /// </summary>
@@ -37,11 +42,31 @@ public class BattleCanvas : MonoBehaviour
 
     }
     /// <summary>
-    /// ダイアログのTextを書き換える関数
+    /// ダイアログの全体を空白にする処理
     /// </summary>
-    public void UpdateDialog()
+    public void ResetDialog()
     {
-        
+
+    }
+    /// <summary>
+    /// ダイアログのTextを書き換える関数（完成済）
+    /// </summary>
+    public void UpdateDialog(string text)
+    {
+        //もし、logが空ならtextを途中に呼ぶ
+        foreach (var item in DialogText)
+        {
+            if (item.text == "")
+            {
+                item.text = text; return;
+            }
+        }
+        //DialogText[7]に新しいのを追加
+        for (int num=0; num<DialogText.Count-1; num++)
+        {
+            DialogText[num].text = DialogText[num+1].text;
+        }
+        DialogText[DialogText.Count-1].text =  text;
     }
     /// <summary>
     /// HeroをSetActive(true)する関数

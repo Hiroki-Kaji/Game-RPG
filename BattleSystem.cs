@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,6 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class BattleSystem : MonoBehaviour
 {
+    //定数
     static int MAX_ENEMIES_NUM = 3;//最大敵の数
     static float SINGLE_ATTACK_DAMAGE_COLLECTION=1.5f;//1人攻撃倍率補正
     static float HEAL_EFFECT_RATE = 0.3f;//回復倍率補正
@@ -41,6 +43,7 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator WaitPlayerSelect()
     {
         Debug.Log("BattleSystem.WaitPlayerSelect");
+        _battleCanvas.OpenButtons();
         while (playerSelect==0)
         {
             yield return new WaitForSeconds(0.5f);
@@ -82,11 +85,12 @@ public class BattleSystem : MonoBehaviour
                 Debug.LogError("入力判定が想定外です!");
                 break;
         }
+        UpdateHP();
         //_battleCanvas.UpdateDialog(ResouceDataBase.instance.BattleText);
         //敵の攻撃
         foreach (CharaStatus e in enemies)
         {
-            if (e.HP > 0) { player.damageHP((int)(e.Atk));}
+            if (e.HP > 0) {player.damageHP((int)(e.Atk));}
         }
         //生死判定
         if (enemies.All(e => e.HP == 0))
@@ -143,11 +147,13 @@ public class BattleSystem : MonoBehaviour
         //バトルターンの初期化
         battleTurn = 0;
         //敵のリソース情報を読み込む
-        SetBattleText(GameManager.instance.BattleID);
+        SetBattleText(ResourceDataBase.instance.GameProgression[GameManager.instance.SceneID].SceneName);
         //最初のゲーム敵配置
+        SetBackground();
         GetPlayableChara();
         GetEnemyChara();
         SetChara();
+        _battleCanvas.ResetDialog();
         _battleCanvas.CloseLoading();
         //バトルのセット
         SetBattle();
@@ -155,45 +161,53 @@ public class BattleSystem : MonoBehaviour
     //２戦目以降の設定
     private void NextStart()
     {
+        Debug.Log("BattleSystem.NextStart");
         battleTurn++;
         //次のバトルシーンがある場合、セット
         try
         {
+            SetBackground();
             GetEnemyChara();
             SetChara();
-            _battleCanvas.CloseLoading();
             //バトルのセット
             SetBattle();
         }
         catch
         {
+            _battleCanvas.OpenLoading();
             UpdateScene();
         }     
     }
     //テキストを更新する処理
-    private void UpdateText()
+    private void UpdateText(string text)
     {
-
+        Debug.Log("BattleSystem.UpdateText");
+        _battleCanvas.UpdateDialog(text);
     }
     //テキストを準備する処理
     private void SetText()
     {
-        UpdateText();
+        Debug.Log("BattleSystem.SetText");
+        string text = "";
+        UpdateText(text);
     }
     //テキストを読み込む処理
     private string GetText(int textNumber)
     {
-        return "";
+        return ResourceDataBase.instance.BattleText[textNumber];
     }
     //背景をセットするための処理
-    private void SetBackground(int backgroundNumber)
+    private void SetBackground()
     {
+        Debug.Log("BattleSystem.SetBackground");
+        Sprite bg = ResourceDataBase.instance.SearchBattleBack(ResourceDataBase.instance.GameBattleInfo[battleTurn].background);
         _battleCanvas.ChangeBackGround();
-        //_battleCanvas.ChangeBackGround(backgroundNumber);
+        //_battleCanvas.ChangeBackGround(bg);
     }
     //CharaUIをセットする関数
     private void SetChara()
     {
+        Debug.Log("BattleSystem.SetChara");
         _battleCanvas.UpdateHeroData(Player);
         for(int i =0;i<Enemies.Count;i++)
         {
@@ -210,6 +224,7 @@ public class BattleSystem : MonoBehaviour
     //プレイヤーの情報を格納する
     private void GetPlayableChara()
     {
+        Debug.Log("BattleSystem.GetPlayableChara");
         player = new CharaStatus(CharaDataBase.instance.OutputPlayableChara(), GameManager.instance.PlayerLv);
     }
     //エネミーの情報を格納する
@@ -231,7 +246,7 @@ public class BattleSystem : MonoBehaviour
     {
         Debug.Log("BattleSystem.UpdateScene");
         //ストーリーシーンに変更
-        GameSystem.instance.ChangeStoryScene();
+        GameSystem.instance.ChangeScene();
     }
     //バトルに関係するキャラ全員のステータスを変換し格納する
     private void SetCharaStatus()
@@ -254,11 +269,11 @@ public class BattleSystem : MonoBehaviour
 
     }
     //ResourceDataBaseにバトルテキストを格納させる
-    public void SetBattleText(int fileID)
+    public void SetBattleText(string sceneName)
     {
         Debug.Log("BattleSystem.SetBattleText");
         //通常はfileIDのデータを呼び出す
-        ResourceDataBase.instance.SetupBattleText("sample");
+        ResourceDataBase.instance.SetupBattleText(sceneName);
     }
 
     private void PlayerDeath()

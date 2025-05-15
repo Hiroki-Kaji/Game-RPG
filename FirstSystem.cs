@@ -20,6 +20,6 @@ public class FirstSystem: MonoBehaviour
 
     public void OnStartButton()
     {
-        GameSystem.instance.ChangeStoryScene();
+        GameSystem.instance.ChangeScene();
     }
 }
