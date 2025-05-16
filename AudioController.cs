@@ -6,25 +6,26 @@ public class AudioController : MonoBehaviour
 {
     public static AudioController instance;
 
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] List<AudioClip> bGMList = new List<AudioClip>();
     [SerializeField] List<AudioClip> soundList = new List<AudioClip>();
 
     /// <summary>
-    /// �C���X�^���X��
+    /// インスタンス化
     /// </summary>
     private void Awake()
     {
         
     }
     /// <summary>
-    /// �w�肳�ꂽBGM�𗬂��֐�
+    /// BGMを出力する
     /// </summary>
     public void OutputBGM()
     {
 
     }
     /// <summary>
-    /// �w�肳�ꂽ���ʉ��𗬂��֐�
+    /// 効果音を出力する
     /// </summary>
     public void OutputSound()
     {

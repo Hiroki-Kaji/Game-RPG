@@ -107,3 +107,16 @@ public class GameSystem : MonoBehaviour
     }
     #endregion
 }
+
+//属性の概念だけ追加（今後の拡張性）
+public enum Attribute
+{
+    None,
+    Fire,
+    Ice,
+    Elec,
+    Wind,
+    Rock,
+}
+
+

@@ -17,7 +17,7 @@ public class BattleData
 }
 
 [Serializable]
-public class TextDataWrapper
+public class BattleDataWrapper
 {
-    public TextData[] lines;
+    public BattleData[] lines;
 }

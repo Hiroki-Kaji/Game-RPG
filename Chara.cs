@@ -10,6 +10,7 @@ public class Chara : ScriptableObject
     [SerializeField] Sprite charaSprite;
     [SerializeField] int basicHP;
     [SerializeField] int basicAtk;
+    [SerializeField] int basicDfn;
     [SerializeField] string skillName;
     [SerializeField] Sprite normal;//•’Ê
     [SerializeField] Sprite angry;//“{‚è
@@ -25,6 +26,7 @@ public class Chara : ScriptableObject
     public Sprite CharaSprite { get => charaSprite;}
     public int BasicHP { get => basicHP;}
     public int BasicAtk { get => basicAtk;}
+    public int BasicDfn { get => basicDfn;}
     public string SkillName { get => skillName;}
     public Sprite Normal { get => normal; }
     public Sprite Angry { get => angry; }
@@ -35,4 +37,5 @@ public class Chara : ScriptableObject
     public Sprite Embarrassing { get => embarrassing;}
     public Sprite Agree { get => agree;}
     public Vector2 FaceCoordinates { get => faceCoordinates; }
+
 }

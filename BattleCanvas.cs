@@ -11,6 +11,7 @@ public class BattleCanvas : MonoBehaviour
     [SerializeField] Image[] Enemies = { };
     [SerializeField] TextMeshProUGUI HeroHP;
     [SerializeField] TextMeshProUGUI [] EnemiesHP;
+    [SerializeField] TextMeshProUGUI HeroLv;
     [SerializeField] TextMeshProUGUI[] EnemiesLv;
     [SerializeField] GameObject Dialog;
     [SerializeField] List<TextMeshProUGUI> DialogText = new List<TextMeshProUGUI>();
@@ -89,6 +90,7 @@ public class BattleCanvas : MonoBehaviour
     {
         //スプライトの更新
         //HPtextの初期設定
+        //Lvの表示
     }
     /// <summary>
     /// HeroHPのTextを書き換える関数

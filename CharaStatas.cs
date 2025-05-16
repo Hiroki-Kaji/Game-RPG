@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [System.Serializable]
@@ -7,14 +8,30 @@ public class CharaStatus
 {
     #region 変数/参照
     [SerializeField] private Chara _chara; //キャラクターの基礎データ
+    [SerializeField] private Attribute attribute;//キャラ属性
     [SerializeField] private int hp; //体力
     [SerializeField] private int atk; //攻撃力
+    [SerializeField] private int dfn; //防御力
+    [SerializeField] private int base_atk; //攻撃力
+    [SerializeField] private int base_dfn; //防御力
     [SerializeField] private int lv; //レベル
+    [SerializeField] private Weapon weapon;
+    [SerializeField] private Armer armer;
+    [SerializeField] private Ring ring;
 
+    public Chara Chara { get => _chara; }
+    public Attribute Attribute { get => attribute; }
     public int HP { get => hp;}
     public int Atk { get => atk;}
     public int Lv { get => lv;}
-    public Chara Chara { get => _chara; }
+    public int Dfn { get => dfn; }
+    public int Base_atk { get => base_atk;}
+    public int Base_dfn { get => base_dfn;}
+    public Weapon Weapon { get => weapon; }
+    public Armer Armer { get => armer; }
+    public Ring Ring { get => ring; }
+
+
 
     #endregion
     #region メソッド
@@ -26,17 +43,55 @@ public class CharaStatus
         lv = inputlv;
         hp = SetHP();
         atk = SetAtk();
+        dfn = SetDfn();
+    }
+
+    public CharaStatus(Chara chara, int inputlv,Weapon weapon, Armer armer,Ring ring)
+    {
+        _chara = chara;
+        lv = inputlv;
+        SetEquipment(weapon, armer, ring);
+        hp = SetHP();
+        atk = SetAtk();
+        dfn = SetDfn();
     }
     public int SetHP()
     {
-        hp = _chara.BasicHP * lv;
+        float prassRate = 1f;
+        //通常の基礎ステータスの追加
+        base_atk = _chara.BasicAtk;
+        //装備のステータスの追加
+        if (weapon != null) { prassRate += weapon.PrassHPrate; }
+        if (armer != null) { prassRate += armer.PrassHPrate; }
+        if (ring != null) { prassRate += ring.PrassHPrate; }
+        hp = (int)(_chara.BasicHP * prassRate * GrowthFactor(Lv)); 
         return hp;
     }
 
     public int SetAtk()
     {
-        atk = _chara.BasicAtk * lv;
+        float prassRate = 1f;
+        //通常の基礎ステータスの追加
+        base_atk = _chara.BasicAtk;
+        //装備のステータスの追加
+        if (weapon != null) { base_atk += weapon.PrassATK; prassRate += weapon.PrassATKrate; }
+        if (armer != null) { prassRate += armer.PrassATKrate; }
+        if (ring != null) { prassRate += ring.PrassATKrate; }
+         atk = (int)(base_atk * prassRate * GrowthFactor(Lv));
         return atk;
+    }
+
+    public int SetDfn()
+    {
+        float prassRate = 1f;
+        //通常の基礎ステータスの追加
+        base_dfn = _chara.BasicDfn;
+        //装備のステータスの追加
+        if (weapon != null) { base_dfn += weapon.PrassATK; prassRate += weapon.PrassDfnrate; }
+        if (armer != null) { prassRate += armer.PrassDfnrate; }
+        if (ring != null) { prassRate += ring.PrassDfnrate; }
+        dfn = (int)(base_dfn * prassRate * GrowthFactor(Lv));
+        return dfn;
     }
     public int MaxHP()
     {
@@ -66,6 +121,36 @@ public class CharaStatus
         {
             this.hp = MaxHP();
         }
+    }
+
+    public void SetEquipment(Weapon weapon, Armer armer,Ring ring)
+    {
+        if (weapon != null) this.weapon = weapon;
+        if (armer != null) this.armer = armer;
+        if (ring != null) { 
+            this.ring = ring; 
+            SetAttribute(); 
+        }
+    }
+
+    public void SetAttribute()
+    {
+        this.attribute = this.ring.Attribute;
+    }
+    /// <summary>
+    /// 成長率の調整
+    /// </summary>
+    /// <param name="lv"></param>
+    /// <returns></returns>
+    private float GrowthFactor(int lv)
+    {
+        if (lv <= 30) return lv * 0.1f;
+        if (lv <= 60) return lv * 0.15f - 1.5f;
+        if (lv <= 80) return lv * 0.225f - 6.0f;
+        if (lv <= 100) return lv * 0.45f - 24.0f;
+        if (lv <= 150) return lv * 0.1125f + 5.25f;
+        if (lv <= 180) return lv * 0.16875f - 3.1875f;
+        return lv * 0.253125f - 18.375f;
     }
     #endregion
 }

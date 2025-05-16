@@ -9,7 +9,7 @@ public class ResourceDataBase : MonoBehaviour
     //自身のインスタンス化
     public static ResourceDataBase instance = null;
 
-    [SerializeField] public List<TextData>GameStoryInfo =new List<TextData>();
+    [SerializeField] public TextDataWrapper GameStoryInfo;
     [SerializeField] public List<BattleData>GameBattleInfo =new List<BattleData>();
     [SerializeField] public List<string> BattleText = new List<string>();
     [SerializeField] public List<ProgressionData> GameProgression = new List<ProgressionData>();
@@ -28,6 +28,11 @@ public class ResourceDataBase : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        SetupStoryText("sample");
+    }
+
     //ストーリーのテキストを呼び出す
     public void SetupStoryText(string filename)
     {
@@ -40,7 +45,9 @@ public class ResourceDataBase : MonoBehaviour
             Debug.LogError("JSONのパースに失敗しました。形式を確認してください。");
             return;
         }
-            GameStoryInfo = new List<TextData>(wrapper.lines);
+            GameStoryInfo.title = wrapper.title;
+            GameStoryInfo.areaName = wrapper.areaName;
+            GameStoryInfo.lines = new List<TextData>(wrapper.lines);
 
             // デバッグ表示
             // foreach (var line in GameStoryInfo) {

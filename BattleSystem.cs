@@ -58,6 +58,7 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator MainBattleTurn()
     {
         Debug.Log("BattleSystem.MainBattleTurn");
+        int damage = 0;
         yield return new WaitForSeconds(1f);
         //見方の攻撃
         //＊＊＊＊攻撃は一番左を狙う
@@ -67,14 +68,17 @@ public class BattleSystem : MonoBehaviour
                 //_battleCanvas.UpdateDialog(ResouceDataBase.instance.BattleText);
                 foreach (CharaStatus e in enemies)
                 {
-                    if (e.HP > 0) { e.damageHP((int)(Player.Atk * SINGLE_ATTACK_DAMAGE_COLLECTION)); break; }
+                    damage = DamageCalculation(player, e);
+                    damage = (int)(damage*SINGLE_ATTACK_DAMAGE_COLLECTION);
+                    if (e.HP > 0) { e.damageHP(damage); break; }
                 }
                 break;
 
             case 2://魔法
                 //_battleCanvas.UpdateDialog(ResouceDataBase.instance.BattleText);
                 foreach (CharaStatus e in enemies) {
-                    e.damageHP(Player.Atk);
+                    damage = DamageCalculation(player, e);
+                    e.damageHP(damage);
                 }
                 break;
             case 3://回復
@@ -225,7 +229,7 @@ public class BattleSystem : MonoBehaviour
     private void GetPlayableChara()
     {
         Debug.Log("BattleSystem.GetPlayableChara");
-        player = new CharaStatus(CharaDataBase.instance.OutputPlayableChara(), GameManager.instance.PlayerLv);
+        player = new CharaStatus(CharaDataBase.instance.OutputPlayableChara(), GameManager.instance.PlayerLv, GameManager.instance.PlayerWeapon, GameManager.instance.PlayerArmer, GameManager.instance.PlayerRing);
     }
     //エネミーの情報を格納する
     //ResouceDataBaseからバトルフェーズの敵情報を取得する方法
@@ -283,5 +287,66 @@ public class BattleSystem : MonoBehaviour
     }
 
     #endregion
+    #endregion
+
+    #region ダメージ計算
+    public int DamageCalculation(CharaStatus atk,CharaStatus dfn)
+    {
+        float damage = 0;
+        //通常ダメージ
+        damage = atk.Atk;
+        //ダメバフ補正
+        //レベル補正
+        damage*= LevelDifferenceCcorrection(atk,dfn);
+        //属性相性
+        damage *= AttributeCorrection(atk.Attribute, dfn.Attribute);
+        //防御補正
+        damage *= DefenseModifier(atk, dfn);
+        Debug.Log("総量ダメージ："+damage);
+        return (int)damage;
+    }
+    //レベル差補正
+    public float LevelDifferenceCcorrection(CharaStatus atk, CharaStatus dfn)
+    {
+        return 1f+0.05f*(atk.Lv - dfn.Lv)/10;
+    }
+    //属性補正
+    public float AttributeCorrection(Attribute atkAt,Attribute defAt)
+    {
+        //炎と氷
+        if (atkAt == Attribute.Fire && defAt == Attribute.Ice) return 1.3f;
+        if (atkAt == Attribute.Ice && defAt == Attribute.Fire) return 0.7f;
+        //氷と風
+        if (atkAt == Attribute.Ice && defAt == Attribute.Wind) return 1.1f;
+        if (atkAt == Attribute.Wind && defAt == Attribute.Ice) return 0.9f;
+        //氷と岩
+        if (atkAt == Attribute.Ice && defAt == Attribute.Rock) return 1.1f;
+        if (atkAt == Attribute.Rock && defAt == Attribute.Ice) return 0.9f;
+        //雷と氷
+        if (atkAt == Attribute.Elec && defAt == Attribute.Ice) return 1.1f;
+        if (atkAt == Attribute.Ice && defAt == Attribute.Elec) return 0.9f;
+        //雷と岩
+        if (atkAt == Attribute.Elec && defAt == Attribute.Rock) return 1.1f;
+        if (atkAt == Attribute.Rock && defAt == Attribute.Elec) return 0.9f;
+        //風と炎
+        if (atkAt == Attribute.Wind && defAt == Attribute.Fire) return 1.2f;
+        if (atkAt == Attribute.Fire && defAt == Attribute.Wind) return 0.8f;
+        //風と雷
+        if (atkAt == Attribute.Wind && defAt == Attribute.Elec) return 1.1f;
+        if (atkAt == Attribute.Elec && defAt == Attribute.Wind) return 0.9f;
+        //岩と風
+        if (atkAt == Attribute.Rock && defAt == Attribute.Wind) return 1.2f;
+        if (atkAt == Attribute.Wind && defAt == Attribute.Rock) return 0.7f;
+        //岩と炎
+        if (atkAt == Attribute.Rock && defAt == Attribute.Fire) return 1.1f;
+        if (atkAt == Attribute.Fire && defAt == Attribute.Rock) return 0.9f;
+
+        return 1f;
+    }
+    //防御補正
+    public float DefenseModifier(CharaStatus atk, CharaStatus dfn)
+    {
+        return atk.Atk * 100 / (100 + dfn.Dfn);
+    }
     #endregion
 }
