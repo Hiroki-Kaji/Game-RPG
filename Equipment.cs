@@ -7,15 +7,25 @@ public class Equipment : ScriptableObject
     [SerializeField] string equiName;
     [SerializeField] Sprite sprite;
     [SerializeField] int rarity;
-    [SerializeField] float prassHPrate;
-    [SerializeField] float prassATKrate;
-    [SerializeField] float prassDfnrate;
 
     public string EquiName { get => equiName;}
     public Sprite Sprite { get => sprite; }
-    public float PrassHPrate { get => prassHPrate; }
-    public float PrassATKrate { get => prassATKrate; }
-    public float PrassDfnrate { get => prassDfnrate; }
+    public float PrassHPrate => GetPrassRate(rarity);
+    public float PrassATKrate => GetPrassRate(rarity);
+    public float PrassDfnrate => GetPrassRate(rarity);
+
+    private float GetPrassRate(int rarity)
+    {
+        switch (rarity)
+        {
+            case 1: return 0.2f;
+            case 2: return 0.35f;
+            case 3: return 0.50f;
+            case 4: return 0.65f;
+            case 5: return 0.75f;
+            default: return 0.2f;
+        }
+    }
 
 }
 

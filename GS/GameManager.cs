@@ -77,6 +77,11 @@ public class GameManager : MonoBehaviour
         GameManager.instance.sceneID++;
     }
 
+    internal void BackwardsScene()
+    {
+        GameManager.instance.sceneID--;
+    }
+
     internal void SetWeapon(Weapon weapon)
     {
         GameManager.instance.playerWeapon = weapon;

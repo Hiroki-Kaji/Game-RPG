@@ -8,10 +8,6 @@ using static UnityEngine.GraphicsBuffer;
 
 public class BattleSystem : MonoBehaviour
 {
-    //定数
-    static int MAX_ENEMIES_NUM = 3;//最大敵の数
-    static float SINGLE_ATTACK_DAMAGE_COLLECTION=1.5f;//1人攻撃倍率補正
-    static float HEAL_EFFECT_RATE = 0.3f;//回復倍率補正
     #region 変数/参照
     [SerializeField] BattleCanvas _battleCanvas;
     [SerializeField] private CharaStatus player; //プレイヤーの情報
@@ -33,7 +29,7 @@ public class BattleSystem : MonoBehaviour
     private void SetBattle()
     {
         Debug.Log("BattleSystem.SetBattle");
-        playerSelect = 0;
+        playerSelect = Contents.INT_NULL;
         StartCoroutine(WaitPlayerSelect());
     }
     /// <summary>
@@ -44,9 +40,9 @@ public class BattleSystem : MonoBehaviour
     {
         Debug.Log("BattleSystem.WaitPlayerSelect");
         _battleCanvas.OpenButtons();
-        while (playerSelect==0)
+        while (playerSelect== Contents.INT_NULL)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(Contents.WaitTime);
         }
         _battleCanvas.CloseButtons();
         StartCoroutine(MainBattleTurn());
@@ -58,7 +54,7 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator MainBattleTurn()
     {
         Debug.Log("BattleSystem.MainBattleTurn");
-        int damage = 0;
+        int damage = Contents.INT_NULL;
         yield return new WaitForSeconds(1f);
         //見方の攻撃
         //＊＊＊＊攻撃は一番左を狙う
@@ -69,7 +65,7 @@ public class BattleSystem : MonoBehaviour
                 foreach (CharaStatus e in enemies)
                 {
                     damage = DamageCalculation(player, e);
-                    damage = (int)(damage*SINGLE_ATTACK_DAMAGE_COLLECTION);
+                    damage = (int)(damage*Contents.SINGLE_ATTACK_DAMAGE_COLLECTION);
                     if (e.HP > 0) { e.damageHP(damage); break; }
                 }
                 break;
@@ -83,7 +79,7 @@ public class BattleSystem : MonoBehaviour
                 break;
             case 3://回復
                 //_battleCanvas.UpdateDialog(ResouceDataBase.instance.BattleText);
-                player.HealHP((int)(Player.MaxHP()* HEAL_EFFECT_RATE));
+                player.HealHP((int)(Player.Max_hp* Contents.HEAL_EFFECT_RATE));
                 break;
             default:
                 Debug.LogError("入力判定が想定外です!");
@@ -99,7 +95,12 @@ public class BattleSystem : MonoBehaviour
         //生死判定
         if (enemies.All(e => e.HP == 0))
         {
-            GameSystem.instance.PrassExp(enemies.Count*50);
+            int exp = 0;
+            foreach (CharaStatus e in enemies)
+            {
+                exp += ExperienceDataBase.instance.SetEnemyExp(player, e);
+            }
+            GameSystem.instance.PrassExp(exp);
             //全員削除(蘇生のため最後に削除)
             enemies.Clear();
             // 次のバトルの処理
@@ -149,7 +150,7 @@ public class BattleSystem : MonoBehaviour
     private void Start()
     {
         //バトルターンの初期化
-        battleTurn = 0;
+        battleTurn = Contents.INT_NULL;
         //敵のリソース情報を読み込む
         SetBattleText(ResourceDataBase.instance.GameProgression[GameManager.instance.SceneID].SceneName);
         //最初のゲーム敵配置
@@ -220,16 +221,16 @@ public class BattleSystem : MonoBehaviour
                 _battleCanvas.UpdateOtherData(enemies[i], i);
             }
         }
-        for(int i = MAX_ENEMIES_NUM-1; i > Enemies.Count-1; i--)
+        for(int i = Contents.MAX_ENEMIES_NUM-1; i > Enemies.Count-1; i--)
         {
-            _battleCanvas.CloseOthers(i, 0, 0);
+            _battleCanvas.CloseOthers(i, Contents.INT_NULL, Contents.INT_NULL);
         }
     }
     //プレイヤーの情報を格納する
     private void GetPlayableChara()
     {
         Debug.Log("BattleSystem.GetPlayableChara");
-        player = new CharaStatus(CharaDataBase.instance.OutputPlayableChara(), GameManager.instance.PlayerLv, GameManager.instance.PlayerWeapon, GameManager.instance.PlayerArmer, GameManager.instance.PlayerRing);
+        player = new CharaStatus(CharaDataBase.instance.OutputStoryChara(), GameManager.instance.PlayerLv, GameManager.instance.PlayerWeapon, GameManager.instance.PlayerArmer, GameManager.instance.PlayerRing);
     }
     //エネミーの情報を格納する
     //ResouceDataBaseからバトルフェーズの敵情報を取得する方法
@@ -279,11 +280,11 @@ public class BattleSystem : MonoBehaviour
         //通常はfileIDのデータを呼び出す
         ResourceDataBase.instance.SetupBattleText(sceneName);
     }
-
+    //死に戻り処理
     private void PlayerDeath()
     {
         Debug.Log("player death");
-        GameSystem.instance.ChangeFirstScene();
+        GameSystem.instance.PlayerDeathReturn();
     }
 
     #endregion

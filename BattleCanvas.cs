@@ -100,7 +100,7 @@ public class BattleCanvas : MonoBehaviour
 
     }
     /// <summary>
-    /// Other[引数]をSetActive(true)する関数 引数2以降はnullの時実行しない
+    /// Other[引数]をSetActive(true)する関数 引数2以降は0の時実行しない
     /// </summary>
     public void OpenOthers(int other1, int other2, int other3)
     {
@@ -108,7 +108,7 @@ public class BattleCanvas : MonoBehaviour
         //残りの記述
     }
     /// <summary>
-    /// Other[引数]をSetActive(false)する関数 引数2以降はnullの時実行しない
+    /// Other[引数]をSetActive(false)する関数 引数2以降は0の時実行しない
     /// </summary>
     public void CloseOthers(int other1, int other2, int other3)
     {

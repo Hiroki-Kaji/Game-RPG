@@ -12,8 +12,11 @@ public class CharaStatus
     [SerializeField] private int hp; //体力
     [SerializeField] private int atk; //攻撃力
     [SerializeField] private int dfn; //防御力
-    [SerializeField] private int base_atk; //攻撃力
-    [SerializeField] private int base_dfn; //防御力
+    [SerializeField] private int max_hp; //最大体力
+    [SerializeField] private int max_atk; //最大攻撃力
+    [SerializeField] private int max_dfn; //最大防御力
+    [SerializeField] private int base_atk; //基礎攻撃力
+    [SerializeField] private int base_dfn; //基礎防御力
     [SerializeField] private int lv; //レベル
     [SerializeField] private Weapon weapon;
     [SerializeField] private Armer armer;
@@ -23,13 +26,17 @@ public class CharaStatus
     public Attribute Attribute { get => attribute; }
     public int HP { get => hp;}
     public int Atk { get => atk;}
-    public int Lv { get => lv;}
     public int Dfn { get => dfn; }
+    public int Max_hp { get => max_hp; set => max_hp = value; }
+    public int Max_atk { get => max_atk; set => max_atk = value; }
+    public int Max_dfn { get => max_dfn; set => max_dfn = value; }
     public int Base_atk { get => base_atk;}
     public int Base_dfn { get => base_dfn;}
+    public int Lv { get => lv; }
     public Weapon Weapon { get => weapon; }
     public Armer Armer { get => armer; }
     public Ring Ring { get => ring; }
+
 
 
 
@@ -64,7 +71,8 @@ public class CharaStatus
         if (weapon != null) { prassRate += weapon.PrassHPrate; }
         if (armer != null) { prassRate += armer.PrassHPrate; }
         if (ring != null) { prassRate += ring.PrassHPrate; }
-        hp = (int)(_chara.BasicHP * prassRate * GrowthFactor(Lv)); 
+        hp = (int)(_chara.BasicHP * prassRate * GrowthFactor(Lv));
+        this.max_hp = hp;
         return hp;
     }
 
@@ -78,6 +86,7 @@ public class CharaStatus
         if (armer != null) { prassRate += armer.PrassATKrate; }
         if (ring != null) { prassRate += ring.PrassATKrate; }
          atk = (int)(base_atk * prassRate * GrowthFactor(Lv));
+        this.max_atk = atk;
         return atk;
     }
 
@@ -91,16 +100,8 @@ public class CharaStatus
         if (armer != null) { prassRate += armer.PrassDfnrate; }
         if (ring != null) { prassRate += ring.PrassDfnrate; }
         dfn = (int)(base_dfn * prassRate * GrowthFactor(Lv));
+        this.max_dfn = dfn;
         return dfn;
-    }
-    public int MaxHP()
-    {
-        return _chara.BasicHP * lv;
-
-    }
-    public int MaxAtk()
-    {
-        return _chara.BasicAtk * lv;
     }
 
     public void damageHP(int damage)
@@ -117,9 +118,9 @@ public class CharaStatus
         Debug.Log(this.hp+"::"+heal);
         this.hp += heal;
         Debug.Log(this.hp+"HP:"+ HP);
-        if (this.hp > MaxHP())
+        if (this.hp > Max_hp)
         {
-            this.hp = MaxHP();
+            this.hp = Max_hp;
         }
     }
 

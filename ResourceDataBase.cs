@@ -30,7 +30,7 @@ public class ResourceDataBase : MonoBehaviour
 
     private void Start()
     {
-        SetupStoryText("sample");
+
     }
 
     //ストーリーのテキストを呼び出す

@@ -21,6 +21,7 @@ public class Chara : ScriptableObject
     [SerializeField] Sprite embarrassing;//’p‚¸‚©‚µ‚¢
     [SerializeField] Sprite agree;//“¯ˆÓ
     [SerializeField] Vector2 faceCoordinates;
+    [SerializeField] int basic_experience;
     public int Id { get => id;}
     public string CharaName { get => charaName;}
     public Sprite CharaSprite { get => charaSprite;}
@@ -37,5 +38,5 @@ public class Chara : ScriptableObject
     public Sprite Embarrassing { get => embarrassing;}
     public Sprite Agree { get => agree;}
     public Vector2 FaceCoordinates { get => faceCoordinates; }
-
+    public int Basic_experience { get => basic_experience; }
 }

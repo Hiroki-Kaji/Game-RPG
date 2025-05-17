@@ -41,11 +41,11 @@ public class GameSystem : MonoBehaviour
     {
         Debug.Log("GameSystem.PrassExp");
         exp += GameManager.instance.PlayerExp;
-        while(exp >=100)
+        while(exp >= ExperienceDataBase.instance.OutputCharaExp(GameManager.instance.PlayerLv))
         {
-            if(exp >= 100)
+            if(exp >= ExperienceDataBase.instance.OutputCharaExp(GameManager.instance.PlayerLv))
             {
-                exp -=100;
+                exp -= ExperienceDataBase.instance.OutputCharaExp(GameManager.instance.PlayerLv);
                 GameManager.instance.LevelUp();
             }
         }
@@ -55,6 +55,12 @@ public class GameSystem : MonoBehaviour
     public void SetPlayerName(string name)
     {
         GameManager.instance.SetPlayerName(name);
+    }
+
+    public void PlayerDeathReturn()
+    {
+        GameManager.instance.BackwardsScene();
+        ChangeFirstScene();
     }
 
     public void ChangeScene()

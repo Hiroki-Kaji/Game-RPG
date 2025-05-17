@@ -6,8 +6,8 @@ public class CharaDataBase : MonoBehaviour
 {
     public static CharaDataBase instance;
 
-    [SerializeField] private List<Chara>playableChara = new List<Chara>();
-    [SerializeField] private List<Chara>nonPlayableChara = new List<Chara>();
+    [SerializeField] private List<Chara>storyChara = new List<Chara>();
+    [SerializeField] private List<Chara>enemyChara = new List<Chara>();
 
     private void Awake()
     {
@@ -31,23 +31,23 @@ public class CharaDataBase : MonoBehaviour
         //敵のキャラの分繰り返す
         //もしcharaName と Chara.charanameが一致したら
         //Charaをreturnする。
-        return nonPlayableChara[0];
+        return enemyChara[0];
     }
     /// <summary>
     /// 指定されたキャラ情報を送る関数
     /// </summary>
     /// <returns></returns>
-    public Chara OutputPlayableChara()
+    public Chara OutputStoryChara()
     {
-        return playableChara[0];
+        return storyChara[0];
     }
     /// <summary>
     /// 指定されたキャラ情報を送る関数
     /// </summary>
     /// <returns></returns>
-    public Chara OutputNonPlayableChara()
+    public Chara OutputEnmeyChara()
     {
-        return nonPlayableChara[0];
+        return enemyChara[0];
     }
 
 }
