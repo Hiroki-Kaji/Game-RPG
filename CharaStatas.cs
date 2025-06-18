@@ -18,9 +18,6 @@ public class CharaStatus
     [SerializeField] private int base_atk; //基礎攻撃力
     [SerializeField] private int base_dfn; //基礎防御力
     [SerializeField] private int lv; //レベル
-    [SerializeField] private Weapon weapon;
-    [SerializeField] private Armer armer;
-    [SerializeField] private Ring ring;
 
     public Chara Chara { get => _chara; }
     public Attribute Attribute { get => attribute; }
@@ -33,9 +30,6 @@ public class CharaStatus
     public int Base_atk { get => base_atk;}
     public int Base_dfn { get => base_dfn;}
     public int Lv { get => lv; }
-    public Weapon Weapon { get => weapon; }
-    public Armer Armer { get => armer; }
-    public Ring Ring { get => ring; }
 
 
 
@@ -53,24 +47,11 @@ public class CharaStatus
         dfn = SetDfn();
     }
 
-    public CharaStatus(Chara chara, int inputlv,Weapon weapon, Armer armer,Ring ring)
-    {
-        _chara = chara;
-        lv = inputlv;
-        SetEquipment(weapon, armer, ring);
-        hp = SetHP();
-        atk = SetAtk();
-        dfn = SetDfn();
-    }
     public int SetHP()
     {
         float prassRate = 1f;
         //通常の基礎ステータスの追加
         base_atk = _chara.BasicAtk;
-        //装備のステータスの追加
-        if (weapon != null) { prassRate += weapon.PrassHPrate; }
-        if (armer != null) { prassRate += armer.PrassHPrate; }
-        if (ring != null) { prassRate += ring.PrassHPrate; }
         hp = (int)(_chara.BasicHP * prassRate * GrowthFactor(Lv));
         this.max_hp = hp;
         return hp;
@@ -81,10 +62,6 @@ public class CharaStatus
         float prassRate = 1f;
         //通常の基礎ステータスの追加
         base_atk = _chara.BasicAtk;
-        //装備のステータスの追加
-        if (weapon != null) { base_atk += weapon.PrassATK; prassRate += weapon.PrassATKrate; }
-        if (armer != null) { prassRate += armer.PrassATKrate; }
-        if (ring != null) { prassRate += ring.PrassATKrate; }
          atk = (int)(base_atk * prassRate * GrowthFactor(Lv));
         this.max_atk = atk;
         return atk;
@@ -95,10 +72,6 @@ public class CharaStatus
         float prassRate = 1f;
         //通常の基礎ステータスの追加
         base_dfn = _chara.BasicDfn;
-        //装備のステータスの追加
-        if (weapon != null) { base_dfn += weapon.PrassATK; prassRate += weapon.PrassDfnrate; }
-        if (armer != null) { prassRate += armer.PrassDfnrate; }
-        if (ring != null) { prassRate += ring.PrassDfnrate; }
         dfn = (int)(base_dfn * prassRate * GrowthFactor(Lv));
         this.max_dfn = dfn;
         return dfn;
@@ -124,20 +97,6 @@ public class CharaStatus
         }
     }
 
-    public void SetEquipment(Weapon weapon, Armer armer,Ring ring)
-    {
-        if (weapon != null) this.weapon = weapon;
-        if (armer != null) this.armer = armer;
-        if (ring != null) { 
-            this.ring = ring; 
-            SetAttribute(); 
-        }
-    }
-
-    public void SetAttribute()
-    {
-        this.attribute = this.ring.Attribute;
-    }
     /// <summary>
     /// 成長率の調整
     /// </summary>

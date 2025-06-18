@@ -230,7 +230,7 @@ public class BattleSystem : MonoBehaviour
     private void GetPlayableChara()
     {
         Debug.Log("BattleSystem.GetPlayableChara");
-        player = new CharaStatus(CharaDataBase.instance.OutputStoryChara(), GameManager.instance.PlayerLv, GameManager.instance.PlayerWeapon, GameManager.instance.PlayerArmer, GameManager.instance.PlayerRing);
+        player = new CharaStatus(CharaDataBase.instance.OutputStoryChara(), GameManager.instance.PlayerLv);
     }
     //エネミーの情報を格納する
     //ResouceDataBaseからバトルフェーズの敵情報を取得する方法

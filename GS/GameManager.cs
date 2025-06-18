@@ -12,17 +12,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]private int sceneID; //シーン進捗
     [SerializeField]private int playerLv; //プレイヤーレベル
     [SerializeField]private float playerExp; //プレイヤー経験値
-    [SerializeField] private Weapon playerWeapon;//キャラの武器装備
-    [SerializeField] private Armer playerArmer;//キャラの防具装備
-    [SerializeField] private Ring playerRing;//キャラの指輪装備
 
     public string PlayerName { get => playerName;}
     public int SceneID { get => sceneID;}
     public int PlayerLv { get => playerLv;}
     public float PlayerExp { get => playerExp;}
-    public Weapon PlayerWeapon { get => playerWeapon;}
-    public Armer PlayerArmer { get => playerArmer;}
-    public Ring PlayerRing { get => playerRing; }
     #endregion
 
     #region メソッド
@@ -82,18 +76,5 @@ public class GameManager : MonoBehaviour
         GameManager.instance.sceneID--;
     }
 
-    internal void SetWeapon(Weapon weapon)
-    {
-        GameManager.instance.playerWeapon = weapon;
-    }
-
-    internal void SetArmer(Armer armer)
-    {
-        GameManager.instance.playerArmer = armer;
-    }
-    internal void SetRing(Ring ring)
-    {
-        GameManager.instance.playerRing = ring;
-    }
     #endregion
 }
