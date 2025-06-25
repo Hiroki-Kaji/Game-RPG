@@ -40,12 +40,13 @@ public class GameSystem : MonoBehaviour
     public void PrassExp(float exp)
     {
         Debug.Log("GameSystem.PrassExp");
+        int NeedExp = GameManager.instance.PlayerLv * 100;
         exp += GameManager.instance.PlayerExp;
-        while(exp >= ExperienceDataBase.instance.OutputCharaExp(GameManager.instance.PlayerLv))
+        while(exp >= NeedExp)
         {
-            if(exp >= ExperienceDataBase.instance.OutputCharaExp(GameManager.instance.PlayerLv))
+            if(exp >= NeedExp)
             {
-                exp -= ExperienceDataBase.instance.OutputCharaExp(GameManager.instance.PlayerLv);
+                exp -= NeedExp;
                 GameManager.instance.LevelUp();
             }
         }

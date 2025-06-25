@@ -98,7 +98,7 @@ public class BattleSystem : MonoBehaviour
             int exp = 0;
             foreach (CharaStatus e in enemies)
             {
-                exp += ExperienceDataBase.instance.SetEnemyExp(player, e);
+                exp += 300;
             }
             GameSystem.instance.PrassExp(exp);
             //全員削除(蘇生のため最後に削除)

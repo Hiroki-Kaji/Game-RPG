@@ -148,5 +148,33 @@ public class ResourceDataBase : MonoBehaviour
 
         return sprite;
     }
+
+
+    public String OutputStoryText(int textID)
+    {
+        return GameStoryInfo.lines[textID].text;
+    }
+    
+    public Chara OutputChara(int textID,int charaInt)
+    {
+        /*if(charaInt==1)
+        {
+            return CharaDataBase.instance.OutputPlayableChara(GameStoryInfo.lines[textID].chara1ID);
+        }
+        else if (charaInt == 2)
+        {
+            return CharaDataBase.instance.OutputPlayableChara(GameStoryInfo.lines[textID].chara2ID);
+        }
+        else
+        {
+            return CharaDataBase.instance.OutputStoryChara();
+        }*/
+        return CharaDataBase.instance.OutputStoryChara();
+    }
+
+    public int OutputSpeaker(int textID) {
+
+        return GameStoryInfo.lines[textID].speakerID;
+    }
     #endregion
 }
